@@ -1,0 +1,39 @@
+function doPost(e) {
+  // Extract data from the POST request
+  var sheet = SpreadsheetApp.openById('1w2lu6jwRmsmLmyEWIZCdDdeLu6vOIWROQAFuPis51Kk').getSheetByName('Sheet1');
+  var data = JSON.parse(e.postData.contents);
+
+  // Append each product data to the sheet
+  data.forEach((product) => {
+    sheet.appendRow([product.name, product.price, product.quantity, product.total]);
+  });
+
+  // Create a response with CORS headers
+  var response = ContentService.createTextOutput(JSON.stringify({msg: 'Data successfully added to Google Sheets'}))
+    .setMimeType(ContentService.MimeType.JSON);
+
+  // Add CORS headers
+  response.setHeader("Access-Control-Allow-Origin", "*");
+  response.setHeader("Access-Control-Allow-Methods", "POST");
+  response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  return response;
+}
+
+https://script.google.com/macros/s/AKfycby3SAMhfXqhc0zsYZWn3C4R-_nt6Z6SLori3tP9gbdKOJEQ4aymlzF5jqntVVIHS0CI/exec
+
+fetch(GOOGLE_SCRIPT_URL, {
+  method: 'POST',
+  body: JSON.stringify(products),
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  mode: 'no-cors' // This disables CORS checks but hides the response
+})
+.then(res => {
+  alert('Data successfully submitted');
+})
+.catch(err => {
+  console.error('There was an error!', err);
+  alert('There was an error saving the data!');
+});

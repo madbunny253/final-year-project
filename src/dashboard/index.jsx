@@ -7,9 +7,8 @@ import {
     DialogContent,
     DialogDescription,
 } from "@/components/ui/dialog"
-import { FcGoogle } from "react-icons/fc";
-import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
+import Sidebar from '@/components/ui/custom/Sidebar';
 
 function DashboardDetails() {
     const [openDailog, setOpenDailog] = useState(false);
@@ -41,7 +40,9 @@ function DashboardDetails() {
         });
     };
     return (
-        <div className='flex flex-col items-center mx-56 gap-9'>
+        <div className='flex'>
+            <Sidebar/>
+            <div className='flex flex-col items-center mx-56 gap-9'>
             <h1
                 className='font-bold text-[60px] text-center mt-60'
             >
@@ -63,6 +64,8 @@ function DashboardDetails() {
                 </DialogContent>
             </Dialog>
         </div>
+        </div>
+        
     );
 }
 

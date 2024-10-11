@@ -1,127 +1,155 @@
-import React from 'react'
-import { useState } from 'react';
+import Sidebar from '@/components/ui/custom/Sidebar';
+import React, { useState } from 'react';
 
-function SalesDetails() {
-  const [formData, setFormData] = useState({
-    productName: '',
-    quantity: '',
-    price: '',
-    paymentMode: '',
-  });
+function BillingInterface() {
+  const [products, setProducts] = useState([
+    { name: '', price: 0, quantity: 1, total: 0 },
+  ]);
+  const [grandTotal, setGrandTotal] = useState(0);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+  const handleProductChange = (index, field, value) => {
+    const updatedProducts = [...products];
+    updatedProducts[index][field] = value;
+
+    if (field === 'price' || field === 'quantity') {
+      const price = parseFloat(updatedProducts[index].price) || 0;
+      const quantity = parseInt(updatedProducts[index].quantity) || 1;
+      updatedProducts[index].total = price * quantity;
+    }
+
+    setProducts(updatedProducts);
+    updateGrandTotal(updatedProducts);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Sales Details Submitted:', formData);
-    // Here you can process or send the data for further ML processing
+  const addProduct = () => {
+    setProducts([...products, { name: '', price: 0, quantity: 1, total: 0 }]);
+  };
+
+  const removeProduct = (index) => {
+    const updatedProducts = products.filter((_, i) => i !== index);
+    setProducts(updatedProducts);
+    updateGrandTotal(updatedProducts);
+  };
+
+  const updateGrandTotal = (updatedProducts) => {
+    const totalAmount = updatedProducts.reduce(
+      (acc, product) => acc + product.total,
+      0
+    );
+    setGrandTotal(totalAmount);
+  };
+
+  const isFormValid = () => {
+    return products.every(product => product.name && product.price > 0 && product.quantity > 0);
   };
 
   return (
-    <div className='sm:px-10 md:-px-32 lg:px-56 xl:px-72 px-5 mt-10'>
-      <h2 className='font-bold text-3xl'>Tell us your <span className='text-[#f56551]'>sales details</span></h2>
-      <p className='mt-3 text-gray-500 text-xl'>Just provide some basic information and AI will generate a customized suggestions based on your sales data</p>
+    <div className='flex'>
+      <Sidebar/>
+      <div className="container mx-auto p-4">
+        <h2 className="text-3xl font-bold mb-6">Billing Interface</h2>
 
-      <div className='mt-10'>
-        <form onSubmit={handleSubmit} className="mt-10 space-y-18">
-          <div>
-            <label className="block text-xl font-medium text-gray-700">
-              Product Name with brand
-            </label>
-            <input
-              type="text"
-              name="productName"
-              value={formData.productName}
-              onChange={handleChange}
-              className="mt-2 mb-6 p-2 block w-1/2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-              placeholder="e.g., Cooking Oil"
-              required
-            />
-
-            <div>
-              <label className="block text-lg font-medium text-gray-700">
-                Quantity (in units)
-              </label>
-              <input
-                type="number"
-                name="quantity"
-                value={formData.quantity}
-                onChange={handleChange}
-                className="mt-2 mb-6 p-2 block w-1/2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                placeholder="e.g., 5"
-                required
-              />
-
-              <div>
-                <label className="block text-lg font-medium text-gray-700">
-                  Price (in rupees)
-                </label>
-                <input
-                  type="number"
-                  name="price"
-                  value={formData.price}
-                  onChange={handleChange}
-                  className="mt-2 mb-6 p-2 block w-1/2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                  placeholder="e.g., 200"
-                  required
-                />
-
-                <div>
-                  <label className="block text-lg font-medium text-gray-700">
-                    Payment Mode
-                  </label>
-                  <select
-                    name="paymentMode"
-                    value={formData.paymentMode}
-                    onChange={handleChange}
-                    className="mt-2 mb-6 p-2 block w-1/2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+        <table className="min-w-full table-auto bg-white shadow-md rounded-lg">
+          <thead>
+            <tr className=" bg-[#f56551] text-left text-white">
+              <th className="p-4">Product Name</th>
+              <th className="p-4">Price (₹)</th>
+              <th className="p-4">Quantity</th>
+              <th className="p-4">Total (₹)</th>
+              <th className="p-4">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map((product, index) => (
+              <tr key={index} className="border-t">
+                <td className="p-4">
+                  <input
+                    type="text"
+                    value={product.name}
+                    onChange={(e) =>
+                      handleProductChange(index, 'name', e.target.value)
+                    }
+                    placeholder="Enter product name"
+                    className="p-2 border border-gray-300 rounded-md w-full"
                     required
-                  >
-                    <option value="" disabled>
-                      -- Select Payment Mode --
-                    </option>
-                    <option value="UPI">UPI</option>
-                    <option value="Cash">Cash</option>
-                    <option value="Credit Card">Credit Card</option>
-                    <option value="Debit Card">Debit Card</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-lg font-medium text-gray-700">
-                    Additional Notes (optional)
-                  </label>
-                  <textarea
-                    name="notes"
-                    value={formData.notes}
-                    onChange={handleChange}
-                    className="mt-2 mb-6 p-2 block w-1/2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                    placeholder="Any special details or observations"
                   />
-                </div>
-
-                <div>
+                </td>
+                <td className="p-4">
+                  <input
+                    type="number"
+                    value={product.price}
+                    onChange={(e) =>
+                      handleProductChange(index, 'price', e.target.value)
+                    }
+                    placeholder="Price"
+                    className="p-2 border border-gray-300 rounded-md w-full"
+                    min="0"
+                    required
+                  />
+                </td>
+                <td className="p-4">
+                  <input
+                    type="number"
+                    value={product.quantity}
+                    onChange={(e) =>
+                      handleProductChange(index, 'quantity', e.target.value)
+                    }
+                    placeholder="Quantity"
+                    className="p-2 border border-gray-300 rounded-md w-full"
+                    min="1"
+                    required
+                  />
+                </td>
+                <td className="p-4">
+                  ₹ {product.total.toFixed(2)}
+                </td>
+                <td className="p-4">
                   <button
-                    type="submit"
-                    className="w-auto py-2 px-4 bg-customColor text-black font-semibold rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+                    onClick={() => removeProduct(index)}
+                    className="bg-red-500 text-white py-2 px-4 rounded-full hover:bg-red-600"
                   >
-                    Submit Sales Details
+                    Remove
                   </button>
-                </div>
-              </div>
-            </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <div className="mt-6">
+          <button
+            onClick={addProduct}
+            className="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-600"
+          >
+            Add Product
+          </button>
+        </div>
+
+        <div className="mt-8 text-2xl font-bold">
+          Grand Total: ₹ {grandTotal.toFixed(2)}
+        </div>
+
+        {errorMessage && (
+          <div className="mt-4 text-red-600">
+            {errorMessage}
           </div>
-        </form>
+        )}
+
+        {products.length > 0 && (
+          <div className="mt-6">
+            <button
+              className={`w-full bg-[#f56551] text-white py-3 rounded-lg hover:bg-[#f56551] ${!isFormValid() ? 'opacity-50 cursor-not-allowed' : ''}`}
+              disabled={!isFormValid()}
+            >
+              Checkout
+            </button>
+          </div>
+        )}
       </div>
     </div>
 
-  )
+  );
 }
 
-export default SalesDetails
+export default BillingInterface;

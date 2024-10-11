@@ -9,7 +9,7 @@ import {
     DialogContent,
     DialogDescription,
 } from "@/components/ui/dialog"
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
@@ -40,19 +40,17 @@ function Header() {
     const handleLogout = () => {
         googleLogout();
         localStorage.clear();
-        setUser(null); // Update the user state to null
-        navigate('/',{ replace: true }); // Redirect to home page
+        setUser(null);
+        navigate('/',{ replace: true });
     };
     
-
     return (
         <div className='p-3 shadow-sm flex justify-between items-center px-5'>
             <img src="/logo.svg" />
             <div>
                 {user ?
                     <div className='flex items-center gap-4'>
-                        <Button variant='outline' className='rounded-full'>My Bills</Button>
-                        <Button onClick={handleLogout} >Logout</Button>
+                        <Button onClick={handleLogout} >Log Out</Button>
                     </div> : <Button onClick={()=>{setOpenDailog(true);}}>Sign In</Button>}
             </div>
             <Dialog open={openDailog} onOpenChange={setOpenDailog}>
