@@ -71,7 +71,7 @@ function BillingInterface() {
                       handleProductChange(index, 'name', e.target.value)
                     }
                     placeholder="Enter product name"
-                    className="p-2 border border-gray-300 rounded-md w-full"
+                    className="p-2 border border-gray-300 rounded-md w-full bg-white"
                     required
                   />
                 </td>
@@ -83,7 +83,7 @@ function BillingInterface() {
                       handleProductChange(index, 'price', e.target.value)
                     }
                     placeholder="Price"
-                    className="p-2 border border-gray-300 rounded-md w-full"
+                    className="p-2 border border-gray-300 rounded-md w-full bg-white"
                     min="0"
                     required
                   />
@@ -96,7 +96,7 @@ function BillingInterface() {
                       handleProductChange(index, 'quantity', e.target.value)
                     }
                     placeholder="Quantity"
-                    className="p-2 border border-gray-300 rounded-md w-full"
+                    className="p-2 border border-gray-300 rounded-md w-full bg-white"
                     min="1"
                     required
                   />

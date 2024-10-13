@@ -14,10 +14,10 @@ function DashboardDetails() {
     const [openDailog, setOpenDailog] = useState(false);
     const navigate = useNavigate();
 
-    const toSalesDetails= () => {
+    const toSalesDetails = () => {
         const user = localStorage.getItem('user');
         if (!user) {
-            setOpenDailog(true); 
+            setOpenDailog(true);
             return;
         }
         setOpenDailog(false);
@@ -41,31 +41,30 @@ function DashboardDetails() {
     };
     return (
         <div className='flex'>
-            <Sidebar/>
-            <div className='flex flex-col items-center mx-56 gap-9'>
-            <h1
-                className='font-bold text-[60px] text-center mt-60'
-            >
-                Nothing to show here for the moment . . .<br/><span className='text-[#f56551]'>Try creating new bills</span> 
-            </h1>
-            <p
-                className='text-xl text-gray-500 text-center'
-            >
-                Your personal sales dashboard will be shown here after creating bills for some time.<br/><span className='text-[#f56551] font-semibold'>Sign in to start creating Bills</span> 
-            </p>
-            <Button onClick={toSalesDetails}>Create a new bill here</Button>
-            <Dialog open={openDailog} onOpenChange={setOpenDailog}>
-                <DialogContent>
+            <Sidebar />
+            <div className='flex flex-col items-center mx-44 gap-9'>
+                <h1
+                    className='font-bold text-[60px] text-center mt-28'
+                >
+                    Nothing to show here for the moment...<br /><span className='text-[#f56551]'>Try creating new bills</span>
+                </h1>
+                <p
+                    className='text-2xl text-gray-700 text-center'
+                >
+                    Your personal sales dashboard will be shown here after creating bills for some time.<br /><span className='text-[#f56551] font-semibold'>Sign in to start creating Bills</span>
+                </p>
+                <Button onClick={toSalesDetails}>Create a new bill here</Button>
+                <Dialog open={openDailog} onOpenChange={setOpenDailog}>
+                    <DialogContent>
                         <DialogDescription>
                             <img src="/logo.svg" alt="" />
-                            <h2 className='font-bold text-lg mt-5 items-center'>Please Sign In before creating new bill</h2>
+                            <h2 className='font-bold text-lg mt-5 items-center'>Please <span className='text-[#f56551]'>Sign In</span> before creating new bill</h2>
                             <p className='mt-5'>Sign in to the app to save progress of billing information , Thank You.</p>
                         </DialogDescription>
-                </DialogContent>
-            </Dialog>
+                    </DialogContent>
+                </Dialog>
+            </div>
         </div>
-        </div>
-        
     );
 }
 

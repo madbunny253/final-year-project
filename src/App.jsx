@@ -4,7 +4,7 @@ import Header from './components/ui/custom/Header.jsx';
 import DashboardDetails from './dashboard/index.jsx';
 import SalesDetails from './sales-details/index.jsx';
 import Hero from './components/ui/custom/Hero.jsx';
-import AiRelated from './aialgo/index.jsx';
+import AiRelated from './magic/index.jsx';
 
 function App() {
     const user = localStorage.getItem('user'); // Check if user is logged in

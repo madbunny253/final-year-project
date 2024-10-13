@@ -9,13 +9,13 @@ import {
 
 function Sidebar() {
     const navigate = useNavigate();
-    const location = useLocation(); // To track the current path
+    const location = useLocation();
     const [openDailog, setOpenDailog] = useState(false);
 
     const checkUserLogin = (path) => {
         const user = localStorage.getItem('user');
         if (!user) {
-            setOpenDailog(true); // Display the dialog if user is not logged in
+            setOpenDailog(true);
             return;
         }
         navigate(path);
@@ -25,27 +25,25 @@ function Sidebar() {
     const toMagic = () => checkUserLogin('/magic-ai');
     const toDashboard = () => checkUserLogin('/dashboard');
 
-    // Helper function to check active path
-    const isActive = (path) => location.pathname === path ? 'bg-[#f56551] text-white' : 'bg-gray-200 text-black'; // Use gray background for inactive buttons
+    const isActive = (path) => location.pathname === path ? 'bg-[#f56551] text-white' : 'bg-gray-500 text-white';
 
     return (
-        <div className="h-full p-4 flex flex-col justify-between w-48">
-            {/* Menu Buttons */}
-            <div className="flex flex-col gap-4 mt-10">
-                <Button 
-                    onClick={toDashboard} 
+        <div className="h-screen p-4 flex flex-col justify-between w-48 bg-gray-100">
+            <div className="flex flex-col gap-4 mt-5">
+                <Button
+                    onClick={toDashboard}
                     className={`w-full ${isActive('/dashboard')} hover:bg-[#f56551] hover:text-white transition-all duration-300`}
                 >
                     Dashboard
                 </Button>
-                <Button 
-                    onClick={toSalesDetails} 
+                <Button
+                    onClick={toSalesDetails}
                     className={`w-full ${isActive('/sales-details')} hover:bg-[#f56551] hover:text-white transition-all duration-300`}
                 >
                     Add Bill
                 </Button>
-                <Button 
-                    onClick={toMagic} 
+                <Button
+                    onClick={toMagic}
                     className={`w-full ${isActive('/magic-ai')} hover:bg-[#f56551] hover:text-white transition-all duration-300`}
                 >
                     Magic
@@ -56,11 +54,12 @@ function Sidebar() {
                     <DialogDescription>
                         <img src="/logo.svg" alt="App Logo" />
                         <h2 className='font-bold text-lg mt-5 items-center'>
-                            Please Sign In before creating new bill
+                            Please <span className='text-[#f56551]'>Sign In</span> before performing this action
                         </h2>
                         <p className='mt-5'>
-                            Sign in to the app to save progress of billing information. Thank you.
+                            Sign in to the app to save progress. Thank you.
                         </p>
+
                     </DialogDescription>
                 </DialogContent>
             </Dialog>
